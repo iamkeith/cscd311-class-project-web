@@ -1,0 +1,26 @@
+{
+  "name": "cscd311-class-project-web",
+  "version": "1.0.0",
+  "description": "University of Ghana CSCD311 Residence Web App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamkeith/cscd311-class-project-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iamkeith/cscd311-class-project-web/issues"
+  },
+  "homepage": "https://github.com/iamkeith/cscd311-class-project-web#readme",
+  "dependencies": {
+    "eslint": "^6.5.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.3",
+    "nodemon": "^1.19.3"
+  }
+}
