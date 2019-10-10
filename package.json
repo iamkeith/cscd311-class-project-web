@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/iamkeith/cscd311-class-project-web#readme",
   "dependencies": {
+    "alert-node": "^2.0.1",
     "eslint": "^6.5.1",
     "express": "^4.17.1",
     "mongoose": "^5.7.3",

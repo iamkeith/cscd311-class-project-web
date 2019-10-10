@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const alert = require('alert-node');
 
 const app = express();
 const studentSchema = new mongoose.Schema({
@@ -54,34 +55,24 @@ app.post('/step2', (req,res) => {
 })
 
 app.post('/step3', async (req, res) => {
-    var trigger = 0;
-    if(trigger == 0) {
-        Room.findOneAndUpdate(
-            {
-                room: req.body.room,
-                student1: ''
-            },
-            {
-                student1: user.studentID
-            },
-            {
-                new: true,
-                runValidators: true,
-            }
-        ).then(response => {
-            trigger = 1;
-            const student = Student.create({
-                id: user.studentID,
-                pin: user.pin,
-                name: req.body.name,
-                level: req.body.level,
-                gender: req.body.gender
-            })
-            return res.send(student);
-        })
-    }
-    if(trigger == 0) {
-        Room.findOneAndUpdate(
+    var changed = 0;
+    let room = await Room.findOneAndUpdate(
+        {
+            room: req.body.room,
+            student1: ''
+        },
+        {
+            student1: user.studentID
+        },
+        {
+            new: true,
+            runValidators: true,
+        }
+    )
+    if(room != null)
+        changed = 1;
+    if(changed == 0) {
+        let room = await Room.findOneAndUpdate(
             {
                 room: req.body.room,
                 student2: ''
@@ -93,20 +84,12 @@ app.post('/step3', async (req, res) => {
                 new: true,
                 runValidators: true,
             }
-        ).then(response => {
-            trigger = 1;
-            const student = Student.create({
-                id: user.studentID,
-                pin: user.pin,
-                name: req.body.name,
-                level: req.body.level,
-                gender: req.body.gender
-            })
-            return res.send(student);
-        })
+        )
+        if (room != null)
+            changed = 1;
     }
-    if (trigger == 0) {
-        Room.findOneAndUpdate(
+    if (changed == 0) {
+        let room = await Room.findOneAndUpdate(
             {
                 room: req.body.room,
                 student3: ''
@@ -118,20 +101,12 @@ app.post('/step3', async (req, res) => {
                 new: true,
                 runValidators: true,
             }
-        ).then(response => {
-            trigger = 1;
-            const student = Student.create({
-                id: user.studentID,
-                pin: user.pin,
-                name: req.body.name,
-                level: req.body.level,
-                gender: req.body.gender
-            })
-            return res.send(student);
-        })
+        )
+        if (room != null)
+            changed = 1;
     }
-    if (trigger == 0) {
-        Room.findOneAndUpdate(
+    if (changed == 0) {
+        let room = await Room.findOneAndUpdate(
             {
                 room: req.body.room,
                 student4: ''
@@ -143,20 +118,22 @@ app.post('/step3', async (req, res) => {
                 new: true,
                 runValidators: true,
             }
-        ).then(response => {
-            trigger = 1;
-            const student = Student.create({
-                id: user.studentID,
-                pin: user.pin,
-                name: req.body.name,
-                level: req.body.level,
-                gender: req.body.gender
-            })
-            return res.send(student);
-        })
+        )
+        if (room != null)
+            changed = 1;
     }
-    if (trigger == 0)
-        window.alert("This room is fully booked. Please select another room.")
+    if (changed == 1) {
+        const student = await Student.create({
+            id: user.studentID,
+            pin: user.pin,
+            name: req.body.name,
+            level: req.body.level,
+            gender: req.body.gender
+        })
+        res.sendFile(path.join(__dirname + '/login3.html'));
+    }
+    else if (changed == 0)
+        alert("This room is fully booked. Please select another room.")
 })
 
 mongoose.connect('mongodb://localhost:27017/cscd311-class-project-api', {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false}).then(async () => {
